@@ -19,7 +19,7 @@ A classified listings marketplace built with **Go** (backend API) and **Vue 3** 
 > **Requirements:** Docker Desktop installed and running.
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/manav993/classified-listings.git
 cd classified-listings
 docker compose up --build
 ```
