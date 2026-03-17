@@ -107,7 +107,7 @@ classified-listings/
 ## Features
 
 - **Listings page** — responsive card grid, live search, category/status filters, URL-persisted filters, skeleton loading states
-- **Create / edit form** — client-side and server-side validation, image URL support, inline error feedback
+- **Create / edit form** — client-side and server-side validation, image upload via file picker, inline error feedback
 - **Single listing view** — full details page, edit in place, delete with confirmation dialog
 - **Pagination** — server-side with "Showing X to Y of Z" count
 - **Fully Dockerised** — multi-stage builds, Nginx SPA serving, SQLite data volume
@@ -126,7 +126,8 @@ See [`backend/README.md`](./backend/README.md) for the full endpoint reference, 
   - The application is a pure client-side SPA with no SEO requirements, so Nuxt's SSR/SSG capabilities add complexity without benefit here.
   - Vue Router handles all navigation needs directly.
   - In a real product with public-facing listing pages that need SEO, Nuxt would be the right choice and the migration path from this codebase is straightforward (move `views/` → `pages/`, replace `useListings` with Pinia, add `useFetch`/`useAsyncData`).
-- All form fields (title, description, price, category, status) are required. Image URL is optional.
+- All form fields (title, description, price, category, status) are required. An image can optionally be attached via file upload.
+- Prices are in **GBP (£)**. The `price` field is stored as a decimal; no currency conversion is performed.
 - `date_posted` is set server-side on creation and never modified by updates.
 - SQLite is used for local/test convenience. A production deployment would use PostgreSQL (see backend README).
 - Category and status are validated at the application layer rather than via database constraints for clearer error messages.
@@ -139,11 +140,10 @@ See [`backend/README.md`](./backend/README.md) for the full endpoint reference, 
 - **Replace SQLite with PostgreSQL** — SQLite serialises all writes, which becomes a bottleneck under concurrent load.
 - **Use a migrations tool** (e.g. `golang-migrate`) so schema changes are versioned and safe to run in CI/CD.
 - **Add authentication** — JWT-based auth so only listing owners can modify or delete their own listings.
-- **Replace the image URL input with a proper file upload flow.** The current implementation accepts a URL string entered by the user. In production this would be replaced with: a `POST /api/upload` endpoint that accepts a `multipart/form-data` file, streams it to object storage (S3, GCS, or Cloudflare R2), and returns the CDN URL. The frontend would present a file picker, upload on selection, and store only the returned URL in `image_url` — so the data model stays the same but the user never types a URL manually.
+- **Extend image storage to object storage** — the current `POST /api/upload` endpoint stores images on local disk. In production this would stream files directly to S3, GCS, or Cloudflare R2 and return a CDN URL, so images survive container restarts and scale horizontally.
 
 ### API
 - Support `PATCH /api/listings/{id}` for partial updates.
-- Add an `Idempotency-Key` header on `POST` to prevent duplicate listings from retried requests.
 - Add rate limiting to protect against abuse.
 
 ### Observability
@@ -151,6 +151,5 @@ See [`backend/README.md`](./backend/README.md) for the full endpoint reference, 
 - Prometheus metrics + OpenTelemetry tracing.
 
 ### Testing
-- Frontend component tests with Vitest + Vue Test Utils.
-- Playwright/Cypress end-to-end browser tests.
+- Playwright/Cypress end-to-end browser tests covering full user journeys.
 - Repository integration tests against a real in-process SQLite instance.
