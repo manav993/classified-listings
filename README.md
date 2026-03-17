@@ -104,6 +104,12 @@ classified-listings/
 
 ---
 
+## Screenshot
+
+![Marketplace Listings UI](./docs/screenshot.png)
+
+---
+
 ## Features
 
 - **Listings page** — responsive card grid, live search, category/status filters, URL-persisted filters, skeleton loading states
