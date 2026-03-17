@@ -1,0 +1,132 @@
+:root {
+  /* Brand colours */
+  --color-primary:      #10b981;
+  --color-primary-dark: #059669;
+  --color-primary-deep: #047857;
+  --color-danger:       #ef4444;
+  --color-danger-dark:  #dc2626;
+
+  /* Text */
+  --color-text:         #111827;
+  --color-text-secondary: #374151;
+  --color-muted:        #6b7280;
+  --color-subtle:       #9ca3af;
+
+  /* Surfaces & borders */
+  --color-bg:           #f3f4f6;
+  --color-surface:      #fff;
+  --color-surface-alt:  #f9fafb;
+  --color-border:       #e5e7eb;
+  --color-border-dark:  #d1d5db;
+
+  /* Badge colours */
+  --color-badge-active:   #10b981;
+  --color-badge-inactive: #6b7280;
+
+  /* Radii */
+  --radius-pill: 999px;
+  --radius-card: 14px;
+  --radius-input: 8px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, "SF Pro Text", sans-serif;
+  font-size: 15px;
+  color: var(--color-text);
+  background: var(--color-bg);
+  min-height: 100vh;
+}
+
+a {
+  color: var(--color-primary-dark);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* Base button */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Primary - green */
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  color: #fff;
+  border-color: var(--color-primary-dark);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary-deep));
+  box-shadow: 0 4px 18px rgba(16, 185, 129, 0.4);
+}
+
+/* Secondary / Outline */
+.btn-secondary,
+.btn-outline {
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  border-color: var(--color-border-dark);
+}
+
+.btn-secondary:hover:not(:disabled),
+.btn-outline:hover:not(:disabled) {
+  background: var(--color-surface-alt);
+  border-color: var(--color-muted);
+}
+
+/* Danger - red */
+.btn-danger {
+  background: var(--color-danger);
+  color: #fff;
+  border-color: var(--color-danger);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: var(--color-danger-dark);
+}
+
+/* Small variant */
+.btn-sm {
+  padding: 5px 12px;
+  font-size: 13px;
+}

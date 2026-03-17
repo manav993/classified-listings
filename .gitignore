@@ -1,0 +1,19 @@
+# SQLite database files
+data/
+*.db
+
+# Go binaries
+/bin/
+*.exe
+
+# Node
+node_modules/
+
+# Frontend build output
+frontend/dist/
+
+# Uploaded images (stored in Docker volume, not tracked)
+uploads/
+
+# macOS
+.DS_Store

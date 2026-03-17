@@ -1,0 +1,44 @@
+services:
+
+  # Go API backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      PORT: "8080"
+      ALLOWED_ORIGIN: "http://localhost:3000"
+      UPLOADS_DIR: "/app/uploads"
+    # Mount named volumes so the database and uploaded images persist across restarts.
+    volumes:
+      - sqlite_data:/app/data
+      - uploads_data:/app/uploads
+    restart: unless-stopped
+    # Backend is only reachable from within the Docker network (frontend proxies to it).
+    # Expose on host for local development / curl testing.
+    ports:
+      - "8080:8080"
+    # Healthcheck ensures the frontend only starts once the Go server is accepting
+    # connections, preventing "connection refused" errors on first load.
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8080/api/listings/ > /dev/null"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+
+  # Vue 3 + Nginx frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  sqlite_data:
+  uploads_data:

@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS listings (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	title TEXT NOT NULL,
+	description TEXT NOT NULL,
+	price REAL NOT NULL,
+	category TEXT NOT NULL,
+	date_posted DATETIME NOT NULL,
+	status TEXT NOT NULL,
+	image_url TEXT
+);
